@@ -1,10 +1,19 @@
 cmake_minimum_required(VERSION 3.1)
 project(linthesia)
 
+set(LINTHESIA_MAJOR_VERSION 0)
+set(LINTHESIA_MINOR_VERSION 5)
+set(LINTHESIA_PATCH_VERSION 0)
+set(LINTHESIA_TWEAK_VERSION 0)
+set(LINTHESIA_VERSION_STRING "${LINTHESIA_MAJOR_VERSION}.${LINTHESIA_MINOR_VERSION}.${LINTHESIA_PATCH_VERSION}.${LINTHESIA_TWEAK_VERSION}")
+
+if(WIN32)
+    message(SEND_ERROR "Warning! Win32 builds are untested and not guaranteed to work! (yet)")
+endif(WIN32)
+
 # TODO: Version stuff
-# TODO: Custom script and graphics paths
 # TODO: CPack with tgz, deb, rpm output (based on OS/tool detection?)
-# TODO: Check gettimeofday library function (whatever that means)
+# TODO: timeofday detection (but is that really needed nowadays?)
 # TODO: Check compiler features
 
 set(CMAKE_CXX_FLAGS "-Wall")
@@ -18,8 +27,19 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -ggdb")
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--export-dynamic")
-# TEMPORARY
+
+add_definitions(
+    -DPACKAGE="${PROJECT_NAME}";
+    -DPACKAGE_NAME="${PROJECT_NAME}";
+    -DPACKAGE_STRING="${PROJECT_NAME} ${LINTHESIA_VERSION_STRING}";
+    -DVERSION="${LINTHESIA_VERSION_STRING}";
+    -DPACKAGE_VERSION="${LINTHESIA_VERSION_STRING}";
+    -DPACKAGE_BUGREPORT="troyer@protonmail.com";
+)
+
+# TEMPORARY (See 1st todo)
 add_definitions(-DHAVE_CONFIG_H)
+
 # TODO: This is broken in some places according to CMake 3.1 docs
 add_definitions(-DGRAPHDIR="${PROJECT_SOURCE_DIR}/graphics")
 add_definitions(-DSCRIPTDIR="${PROJECT_SOURCE_DIR}/graphics")
@@ -30,6 +50,7 @@ endif(CMAKE_BUILD_TYPE MATCHES DEBUG)
 
 # TODO: Detect library support and gtkmm, atkmm etc existence
 include_directories(include /usr/include/gtkmm-2.4 /usr/include/glibmm-2.4 /usr/lib/glibmm-2.4/include /usr/include/glib-2.0 /usr/lib/glib-2.0/include /usr/include/sigc++-2.0 /usr/lib/sigc++-2.0/include /usr/include/giomm-2.4 /usr/lib/giomm-2.4/include /usr/include/gdkmm-2.4 /usr/include/gtk-2.0 /usr/include/cairo /usr/include/pango-1.0 /usr/lib/gtk-2.0/include /usr/include/gdk-pixbuf-2.0 /usr/lib/gdkmm-2.4/include /usr/lib/pangomm-1.4/include /usr/include/cairomm-1.0 /usr/include/freetype2 /usr/include/pangomm-1.4 /usr/include/atk-1.0 /usr/lib/gtkmm-2.4/include /usr/include/atkmm-1.6 /usr/include/gtkglextmm-1.2 /usr/lib/gtkglextmm-1.2/include /usr/lib/gtkglext-1.0/include /usr/include/gtkglext-1.0 /usr/include/gconfmm-2.6 /usr/include/gconf/2 include/libmidi)
+
 file(GLOB SOURCES "src/*.cpp")
 
 add_executable(linthesia ${SOURCES})
