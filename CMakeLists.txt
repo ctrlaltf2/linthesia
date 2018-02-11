@@ -1,57 +1,88 @@
-cmake_minimum_required(VERSION 3.1)
-project(linthesia)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+project(linthesia
+    VERSION 0.4.2.1
+    LANGUAGES CXX
+    DESCRIPTION "Synthesia-like software for Linux"
+)
 
-set(LINTHESIA_MAJOR_VERSION 0)
-set(LINTHESIA_MINOR_VERSION 5)
-set(LINTHESIA_PATCH_VERSION 0)
-set(LINTHESIA_TWEAK_VERSION 0)
-set(LINTHESIA_VERSION_STRING "${LINTHESIA_MAJOR_VERSION}.${LINTHESIA_MINOR_VERSION}.${LINTHESIA_PATCH_VERSION}.${LINTHESIA_TWEAK_VERSION}")
+# TODO: Release/debug configurations
 
 if(WIN32)
     message(SEND_ERROR "Warning! Win32 builds are untested and not guaranteed to work! (yet)")
 endif(WIN32)
 
-# TODO: Version stuff
-# TODO: CPack with tgz, deb, rpm output (based on OS/tool detection?)
-# TODO: timeofday detection (but is that really needed nowadays?)
-# TODO: Check compiler features
+find_package(PkgConfig REQUIRED)
 
-set(CMAKE_CXX_FLAGS "-Wall")
+pkg_check_modules(GTKGLEXTMM REQUIRED gtkglextmm-1.2)
+pkg_check_modules(GTKMM REQUIRED gtkmm-2.4)
+pkg_check_modules(GCONFMM REQUIRED gconfmm-2.6)
+pkg_check_modules(ALSA REQUIRED alsa)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
-
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -ggdb")
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--export-dynamic")
 
-add_definitions(
-    -DCMAKE_PROJECT="${PROJECT_NAME}";
-    -DCMAKE_PROJECT_NAME="${PROJECT_NAME}";
-    -DCMAKE_PROJECT_STRING="${PROJECT_NAME} ${LINTHESIA_VERSION_STRING}";
-    -DCMAKE_VERSION="${LINTHESIA_VERSION_STRING}";
-    -DCMAKE_PROJECT_VERSION="${LINTHESIA_VERSION_STRING}";
-    -DCMAKE_PROJECT_BUGREPORT="troyer@protonmail.com";
+file(GLOB SOURCES "src/*.cpp")
+add_executable(linthesia ${SOURCES})
+
+set_target_properties(linthesia
+    PROPERTIES
+        CXX_STANDARD 11
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+        RUNTIME_OUTPUT_DIRECTORY bin
 )
 
-# TEMPORARY (See 1st todo)
-add_definitions(-DHAVE_CONFIG_H)
+target_compile_features(linthesia
+    PUBLIC
+        cxx_std_11
+)
 
-# TODO: This is broken in some places according to CMake 3.1 docs
-add_definitions(-DGRAPHDIR="${PROJECT_SOURCE_DIR}/graphics")
-add_definitions(-DSCRIPTDIR="${PROJECT_SOURCE_DIR}/graphics")
+# Add definitions for project info
+target_compile_definitions(linthesia
+    PUBLIC
+        -DCMAKE_PROJECT_NAME="${PROJECT_NAME}";
+        -DCMAKE_PROJECT_VERSION="${PROJECT_VERSION}";
+        -DCMAKE_PROJECT_BUGREPORT="troyer@protonmail.com";
+)
+
+# Asset locations
+target_compile_definitions(linthesia
+    PUBLIC
+        -DGRAPHDIR="${PROJECT_SOURCE_DIR}/graphics"
+        -DSCRIPTDIR="${PROJECT_SOURCE_DIR}/graphics"
+)
 
 if(CMAKE_BUILD_TYPE MATCHES DEBUG)
-    add_definitions(-DDEBUG)
+    target_compile_definitions(linthesia
+        PUBLIC
+            -DDEBUG
+    )
 endif(CMAKE_BUILD_TYPE MATCHES DEBUG)
 
-# TODO: Detect library support and gtkmm, atkmm etc existence
-include_directories(include /usr/include/gtkmm-2.4 /usr/include/glibmm-2.4 /usr/lib/glibmm-2.4/include /usr/include/glib-2.0 /usr/lib/glib-2.0/include /usr/include/sigc++-2.0 /usr/lib/sigc++-2.0/include /usr/include/giomm-2.4 /usr/lib/giomm-2.4/include /usr/include/gdkmm-2.4 /usr/include/gtk-2.0 /usr/include/cairo /usr/include/pango-1.0 /usr/lib/gtk-2.0/include /usr/include/gdk-pixbuf-2.0 /usr/lib/gdkmm-2.4/include /usr/lib/pangomm-1.4/include /usr/include/cairomm-1.0 /usr/include/freetype2 /usr/include/pangomm-1.4 /usr/include/atk-1.0 /usr/lib/gtkmm-2.4/include /usr/include/atkmm-1.6 /usr/include/gtkglextmm-1.2 /usr/lib/gtkglextmm-1.2/include /usr/lib/gtkglext-1.0/include /usr/include/gtkglext-1.0 /usr/include/gconfmm-2.6 /usr/include/gconf/2 include/libmidi)
+target_include_directories(linthesia
+    PUBLIC
+        include
+        include/libmidi
+        ${GTKGLEXTMM_INCLUDE_DIRS}
+        ${GTKMM_INCLUDE_DIRS}
+        ${GCONFMM_INCLUDE_DIRS}
+        ${ALSA_INCLUDE_DIRS}
+)
 
-file(GLOB SOURCES "src/*.cpp")
+target_compile_options(linthesia
+    PUBLIC
+        -Wall
+        -Wextra
+        -O2
+        ${GTKGLEXTMM_CFLAGS}
+        ${GTKMM_CFLAGS}
+        ${GCONFMM_CFLAGS}
+        ${ALSA_CFLAGS}
+)
 
-add_executable(linthesia ${SOURCES})
-target_link_libraries(linthesia pthread gconfmm-2.6 gconf-2 gtkglextmm-x11-1.2 gdkglextmm-x11-1.2 gtkglext-x11-1.0 gdkglext-x11-1.0 GLU GL Xmu Xt pangox-1.0 X11 gmodule-2.0 gtkmm-2.4 atkmm-1.6 gdkmm-2.4 giomm-2.4 pangomm-1.4 glibmm-2.4 cairomm-1.0 sigc-2.0 gtk-x11-2.0 gdk-x11-2.0 pangocairo-1.0 atk-1.0 cairo gdk_pixbuf-2.0 gio-2.0 pangoft2-1.0 pango-1.0 gobject-2.0 glib-2.0 fontconfig freetype asound)
+target_link_libraries(linthesia
+    pthread
+    ${GTKGLEXTMM_LIBRARIES}
+    ${GTKMM_LIBRARIES}
+    ${GCONFMM_LIBRARIES}
+    ${ALSA_LIBRARIES}
+)
