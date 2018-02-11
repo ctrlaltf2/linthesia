@@ -12,6 +12,6 @@
 #include <string>
 
 // See CHANGELOG for a list of what has changed between versions
-static const std::string LinthesiaVersionString = VERSION;
+static const std::string LinthesiaVersionString = CMAKE_PROJECT_VERSION;
 
 #endif // __LINTHESIA_VERSION_H__
