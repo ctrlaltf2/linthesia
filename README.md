@@ -11,24 +11,8 @@ Synthesia up to version 0.6.1a is Open Source. This project uses the latest sour
 
 To compile, you need a basic c++ toolchain, and satisfy all dependences which are on BUILD-DEPENDS file. Then, just:
 
-    $ ./autogen.sh
-
-Here you must choose:
-
- a) For developers
-
-    $ mkdir build
-    $ cd build     # Isolate compilation to speed future compilations
-    $ ../configure
-
- b) For general public
-
-    $ ../configure --prefix=/usr
-
-Then:
-
-    $ make
-    $ sudo make install
+    $ cmake .
+    $ make -j5
 
 ## Credits
 
