@@ -268,7 +268,7 @@ void DrawingArea::on_realize() {
   glwindow->gl_end();
 }
 
-bool DrawingArea::on_configure_event(GdkEventConfigure* event) {
+bool DrawingArea::on_configure_event(GdkEventConfigure*) {
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
   if (!glwindow->gl_begin(get_gl_context()))
@@ -296,7 +296,7 @@ bool DrawingArea::on_configure_event(GdkEventConfigure* event) {
   return true;
 }
 
-bool DrawingArea::on_expose_event(GdkEventExpose* event) {
+bool DrawingArea::on_expose_event(GdkEventExpose*) {
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
   if (!glwindow->gl_begin(get_gl_context()))

@@ -45,7 +45,7 @@ Color Renderer::ToColor(int r, int g, int b, int a) {
   return c;
 }
 
-void Renderer::SetVSyncInterval(int interval) {
+void Renderer::SetVSyncInterval(int) {
 // #ifdef WIN32
 
 //    const char *extensions = reinterpret_cast<const char*>(static_cast<const unsigned char*>(glGetString( GL_EXTENSIONS )));

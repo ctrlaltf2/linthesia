@@ -17,9 +17,9 @@ class DpmsThread
   std::atomic<bool>       m_should_exit{false};
   std::condition_variable m_should_exit_cv;
   std::mutex              m_should_exit_cv_m;
+  std::thread             m_thread;
   std::string             m_delay_screensaver_cmd;
 
-  std::thread m_thread;
 
   void run()
   {

@@ -238,8 +238,6 @@ MidiEvent MidiCommIn::Read() {
     // USB device is disconnected - the input client is closed
     {
     cout << "MIDI device is lost" << endl;
-    int lost_client = ev->data.addr.client;
-    int lost_port   = ev->data.addr.port;
     // TODO add better error reporting
     }
     break;
@@ -294,7 +292,7 @@ bool MidiCommIn::ShouldReconnect() const {
 void MidiCommIn::Reconnect() {
   // We assume, that the client and the port is the same after device's reconnect
   // Connect local in to selected port
-  int res = snd_seq_connect_from(alsa_seq, local_in, m_description.client, m_description.port);
+  snd_seq_connect_from(alsa_seq, local_in, m_description.client, m_description.port);
   m_should_reconnect = false;
 }
 
@@ -420,5 +418,5 @@ void MidiCommOut::Reset() {
 
 void MidiCommOut::Reconnect() {
   // We assume, that the client and the port is the same after device's reconnect
-  int res = snd_seq_connect_to(alsa_seq, local_out, m_description.client, m_description.port);
+  snd_seq_connect_to(alsa_seq, local_out, m_description.client, m_description.port);
 }
