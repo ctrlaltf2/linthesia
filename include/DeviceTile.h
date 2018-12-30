@@ -24,83 +24,83 @@ enum TrackTileGraphic;
 
 enum DeviceTileType {
 
-   DeviceTileOutput,
-   DeviceTileInput
+    DeviceTileOutput,
+    DeviceTileInput
 };
 
 class DeviceTile {
-public:
+  public:
 
-  DeviceTile(int x, int y, int device_id,
-             DeviceTileType type, const MidiCommDescriptionList &device_list,
-             Tga *button_graphics, Tga *frame_graphics);
+    DeviceTile(int x, int y, int device_id,
+               DeviceTileType type, const MidiCommDescriptionList& device_list,
+               Tga *button_graphics, Tga *frame_graphics);
 
-  void Update(const MouseInfo &translated_mouse);
-  void Draw(Renderer &renderer) const;
-  void ReplaceDeviceList(const MidiCommDescriptionList &device_list);
+    void Update(const MouseInfo& translated_mouse);
+    void Draw(Renderer& renderer) const;
+    void ReplaceDeviceList(const MidiCommDescriptionList& device_list);
 
-  int GetX() const {
-    return m_x;
-  }
+    int GetX() const {
+        return m_x;
+    }
 
-  int GetY() const {
-    return m_y;
-  }
+    int GetY() const {
+        return m_y;
+    }
 
-  bool HitPreviewButton() const {
-    return button_preview.hit;
-  }
+    bool HitPreviewButton() const {
+        return button_preview.hit;
+    }
 
-  bool IsPreviewOn() const {
-    return m_preview_on;
-  }
+    bool IsPreviewOn() const {
+        return m_preview_on;
+    }
 
-  void TurnOffPreview() {
-    m_preview_on = false;
-  }
+    void TurnOffPreview() {
+        m_preview_on = false;
+    }
 
-  int GetDeviceId() const {
-    return m_device_id;
-  }
+    int GetDeviceId() const {
+        return m_device_id;
+    }
 
-  const ButtonState WholeTile() const {
-    return whole_tile;
-  }
+    const ButtonState WholeTile() const {
+        return whole_tile;
+    }
 
-  const ButtonState ButtonPreview() const {
-    return button_preview;
-  }
+    const ButtonState ButtonPreview() const {
+        return button_preview;
+    }
 
-  const ButtonState ButtonLeft() const {
-    return button_mode_left;
-  }
+    const ButtonState ButtonLeft() const {
+        return button_mode_left;
+    }
 
-  const ButtonState ButtonRight() const {
-    return button_mode_right;
-  }
+    const ButtonState ButtonRight() const {
+        return button_mode_right;
+    }
 
-private:
-  DeviceTile operator=(const DeviceTile &);
+  private:
+    DeviceTile operator=(const DeviceTile&);
 
-  int m_x;
-  int m_y;
+    int m_x;
+    int m_y;
 
-  bool m_preview_on;
-  int m_device_id;
+    bool m_preview_on;
+    int m_device_id;
 
-  MidiCommDescriptionList m_device_list;
+    MidiCommDescriptionList m_device_list;
 
-  DeviceTileType m_tile_type;
+    DeviceTileType m_tile_type;
 
-  Tga *m_button_graphics;
-  Tga *m_frame_graphics;
+    Tga *m_button_graphics;
+    Tga *m_frame_graphics;
 
-  ButtonState whole_tile;
-  ButtonState button_preview;
-  ButtonState button_mode_left;
-  ButtonState button_mode_right;
+    ButtonState whole_tile;
+    ButtonState button_preview;
+    ButtonState button_mode_left;
+    ButtonState button_mode_right;
 
-  int LookupGraphic(TrackTileGraphic graphic, bool button_hovering) const;
+    int LookupGraphic(TrackTileGraphic graphic, bool button_hovering) const;
 };
 
 #endif // __DEVICE_TILE_H

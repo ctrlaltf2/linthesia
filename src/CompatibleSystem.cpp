@@ -11,83 +11,79 @@
 
 #include "MidiComm.h"
 #include "CompatibleSystem.h"
-#include "StringUtil.h"
-#include "Version.h"
 
 using namespace std;
 
 namespace Compatible {
 
-  unsigned long GetMilliseconds() {
+unsigned long GetMilliseconds() {
 
     timeval tv;
     gettimeofday(&tv, 0);
     return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-  }
+}
 
-
-  void ShowError(const string &err) {
+void ShowError(const string& err) {
     Gtk::MessageDialog dialog(err, false, Gtk::MESSAGE_ERROR);
     dialog.run();
-  }
+}
 
-  void HideMouseCursor() {
+void HideMouseCursor() {
     // TODO
-  }
+}
 
-  void ShowMouseCursor() {
+void ShowMouseCursor() {
     // TODO
-  }
+}
 
-  void GetDisplayRect(Gdk::Rectangle &rect) {
-	  static bool inited = false;
-	  static Gdk::Rectangle monitor_geometry;
+void GetDisplayRect(Gdk::Rectangle& rect) {
+    static bool inited = false;
+    static Gdk::Rectangle monitor_geometry;
 
-	  if (!inited) {
-		  auto display = Gdk::Display::get_default();
+    if (!inited) {
+        auto display = Gdk::Display::get_default();
 
-		  int pointer_x, pointer_y;
-		  Gdk::ModifierType pointer_mask;
-		  display->get_pointer(pointer_x, pointer_y, pointer_mask);
+        int pointer_x, pointer_y;
+        Gdk::ModifierType pointer_mask;
+        display->get_pointer(pointer_x, pointer_y, pointer_mask);
 
-		  auto screen = display->get_default_screen();
+        auto screen = display->get_default_screen();
 
-		  screen->get_monitor_geometry(
-				  screen->get_monitor_at_point(pointer_x, pointer_y),
-				  monitor_geometry
-		  );
-		  inited = true;
-	  }
-	  rect = monitor_geometry;
-  }
+        screen->get_monitor_geometry(
+            screen->get_monitor_at_point(pointer_x, pointer_y),
+            monitor_geometry
+        );
+        inited = true;
+    }
+    rect = monitor_geometry;
+}
 
-  int GetDisplayLeft() {
-		Gdk::Rectangle rect;
-		GetDisplayRect(rect);
-	    return rect.get_x();
-  }
+int GetDisplayLeft() {
+    Gdk::Rectangle rect;
+    GetDisplayRect(rect);
+    return rect.get_x();
+}
 
-  int GetDisplayTop() {
-		Gdk::Rectangle rect;
-		GetDisplayRect(rect);
-	    return rect.get_y();
-  }
+int GetDisplayTop() {
+    Gdk::Rectangle rect;
+    GetDisplayRect(rect);
+    return rect.get_y();
+}
 
-  int GetDisplayWidth() {
-	Gdk::Rectangle rect;
-	GetDisplayRect(rect);
+int GetDisplayWidth() {
+    Gdk::Rectangle rect;
+    GetDisplayRect(rect);
     return rect.get_width();
-  }
+}
 
-  int GetDisplayHeight() {
-		Gdk::Rectangle rect;
-		GetDisplayRect(rect);
-	    return rect.get_height();
-  }
+int GetDisplayHeight() {
+    Gdk::Rectangle rect;
+    GetDisplayRect(rect);
+    return rect.get_height();
+}
 
-  void GracefulShutdown() {
+void GracefulShutdown() {
     midiStop();
     Gtk::Main::instance()->quit();
-  }
-
+}
 }; // End namespace

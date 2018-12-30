@@ -23,102 +23,103 @@ typedef std::vector<unsigned long> MidiEventPulsesList;
 typedef std::vector<microseconds_t> MidiEventMicrosecondList;
 
 class MidiTrack {
-public:
-  static MidiTrack ReadFromStream(std::istream &stream);
-  static MidiTrack CreateBlankTrack() {
-    return MidiTrack();
-  }
+  public:
+    static MidiTrack ReadFromStream(std::istream& stream);
 
-  MidiEventList &Events() {
-    return m_events;
-  }
+    static MidiTrack CreateBlankTrack() {
+        return MidiTrack();
+    }
 
-  MidiEventPulsesList &EventPulses() {
-    return m_event_pulses;
-  }
+    MidiEventList& Events() {
+        return m_events;
+    }
 
-  MidiEventMicrosecondList &EventUsecs() {
-    return m_event_usecs;
-  }
+    MidiEventPulsesList& EventPulses() {
+        return m_event_pulses;
+    }
 
-  const MidiEventList &Events() const {
-    return m_events;
-  }
+    MidiEventMicrosecondList& EventUsecs() {
+        return m_event_usecs;
+    }
 
-  const MidiEventPulsesList &EventPulses() const {
-    return m_event_pulses;
-  }
+    const MidiEventList& Events() const {
+        return m_events;
+    }
 
-  const MidiEventMicrosecondList &EventUsecs() const {
-    return m_event_usecs;
-  }
+    const MidiEventPulsesList& EventPulses() const {
+        return m_event_pulses;
+    }
 
-  void SetEventUsecs(const MidiEventMicrosecondList &event_usecs) {
-    m_event_usecs = event_usecs;
-  }
+    const MidiEventMicrosecondList& EventUsecs() const {
+        return m_event_usecs;
+    }
 
-  const std::string InstrumentName() const {
-    return InstrumentNames[m_instrument_id];
-  }
+    void SetEventUsecs(const MidiEventMicrosecondList& event_usecs) {
+        m_event_usecs = event_usecs;
+    }
 
-  bool IsPercussion() const {
-    return m_instrument_id == InstrumentIdPercussion;
-  }
+    const std::string InstrumentName() const {
+        return InstrumentNames[m_instrument_id];
+    }
 
-  const NoteSet &Notes() const {
-    return m_note_set;
-  }
+    bool IsPercussion() const {
+        return m_instrument_id == InstrumentIdPercussion;
+    }
 
-  void SetTrackId(size_t track_id);
+    const NoteSet& Notes() const {
+        return m_note_set;
+    }
 
-  // Reports whether this track contains any Note-On MIDI events
-  // (vs. just being an information track with a title or copyright)
-  bool hasNotes() const {
-    return (m_note_set.size() > 0);
-  }
+    void SetTrackId(size_t track_id);
 
-  void Reset();
-  MidiEventList Update(microseconds_t delta_microseconds);
-  void GoTo(microseconds_t microsecond_song_position);
+    // Reports whether this track contains any Note-On MIDI events
+    // (vs. just being an information track with a title or copyright)
+    bool hasNotes() const {
+        return (m_note_set.size() > 0);
+    }
 
-  unsigned int AggregateEventsRemain() const {
-    return static_cast<unsigned int>(m_events.size() - (m_last_event + 1));
-  }
+    void Reset();
+    MidiEventList Update(microseconds_t delta_microseconds);
+    void GoTo(microseconds_t microsecond_song_position);
 
-  unsigned int AggregateEventCount() const {
-    return static_cast<unsigned int>(m_events.size());
-  }
+    unsigned int AggregateEventsRemain() const {
+        return static_cast<unsigned int>(m_events.size() - (m_last_event + 1));
+    }
 
-  unsigned int AggregateNotesRemain() const {
-    return m_notes_remaining;
-  }
+    unsigned int AggregateEventCount() const {
+        return static_cast<unsigned int>(m_events.size());
+    }
 
-  unsigned int AggregateNoteCount() const {
-    return static_cast<unsigned int>(m_note_set.size());
-  }
+    unsigned int AggregateNotesRemain() const {
+        return m_notes_remaining;
+    }
 
-private:
-  MidiTrack() :
-    m_instrument_id(0) {
+    unsigned int AggregateNoteCount() const {
+        return static_cast<unsigned int>(m_note_set.size());
+    }
 
-    Reset();
-  }
+  private:
+    MidiTrack() :
+        m_instrument_id(0) {
 
-  void BuildNoteSet();
-  void DiscoverInstrument();
+        Reset();
+    }
 
-  MidiEventList m_events;
-  MidiEventPulsesList m_event_pulses;
-  MidiEventMicrosecondList m_event_usecs;
+    void BuildNoteSet();
+    void DiscoverInstrument();
 
-  NoteSet m_note_set;
+    MidiEventList m_events;
+    MidiEventPulsesList m_event_pulses;
+    MidiEventMicrosecondList m_event_usecs;
 
-  int m_instrument_id;
+    NoteSet m_note_set;
 
-  microseconds_t m_running_microseconds;
-  long m_last_event;
+    int m_instrument_id;
 
-  unsigned int m_notes_remaining;
+    microseconds_t m_running_microseconds;
+    long m_last_event;
+
+    unsigned int m_notes_remaining;
 };
 
 #endif

@@ -15,15 +15,11 @@
 #include "Version.h"
 #include "CompatibleSystem.h"
 #include "LinthesiaError.h"
-#include "Tga.h"
 #include "Renderer.h"
 #include "SharedState.h"
 #include "GameState.h"
 #include "TitleState.h"
-#include "DpmsThread.h"
 
-#include "libmidi/Midi.h"
-#include "libmidi/MidiUtil.h"
 #include <gconfmm.h>
 
 #ifndef GRAPHDIR

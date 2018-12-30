@@ -13,14 +13,14 @@
 
 namespace UserSetting {
 
-   // This must be called exactly once before any of the following will work
-   void Initialize(const std::string &app_name);
+// This must be called exactly once before any of the following will work
+void Initialize(const std::string& app_name);
 
-   std::string Get(const std::string &setting,
-		   const std::string &default_value);
-  
-   void Set(const std::string &setting, 
-	    const std::string &value);
+std::string Get(const std::string& setting,
+                const std::string& default_value);
+
+void Set(const std::string& setting,
+         const std::string& value);
 };
 
 #endif // __USER_SETTINGS_H

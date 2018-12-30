@@ -13,18 +13,14 @@ using namespace std;
 
 string LinthesiaError::GetErrorDescription() const {
 
-  switch (m_error) {
-  case Error_StringSpecified: 
-    return m_optional_string;
+    switch (m_error) {
+        case Error_StringSpecified:return m_optional_string;
 
-  case Error_BadPianoType: 
-    return "Bad piano type specified.";
+        case Error_BadPianoType:return "Bad piano type specified.";
 
-  case Error_BadGameState:
-    return "Internal Error: Linthesia entered bad game state!";
+        case Error_BadGameState:return "Internal Error: Linthesia entered bad game state!";
 
-  default:
-    return STRING("Unknown LinthesiaError Code (" << m_error << ").");
-  }
+        default:return STRING("Unknown LinthesiaError Code (" << m_error << ").");
+    }
 }
 

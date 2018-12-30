@@ -14,24 +14,24 @@
 #include "MenuLayout.h"
 
 class StatsState : public GameState {
-public:
+  public:
 
-  StatsState(const SharedState &state) :
-    m_state(state) {
-  }
+    StatsState(const SharedState& state) :
+        m_state(state) {
+    }
 
-protected:
-  virtual void Init();
-  virtual void Update();
-  virtual void Draw(Renderer &renderer) const;
+  protected:
+    virtual void Init();
+    virtual void Update();
+    virtual void Draw(Renderer& renderer) const;
 
-private:
-  ButtonState m_continue_button;
-  ButtonState m_back_button;
+  private:
+    ButtonState m_continue_button;
+    ButtonState m_back_button;
 
-  std::string m_tooltip;
+    std::string m_tooltip;
 
-  SharedState m_state;
+    SharedState m_state;
 };
 
 #endif // __STATS_STATE_H

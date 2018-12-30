@@ -18,35 +18,35 @@
 #include <vector>
 
 class TrackSelectionState : public GameState {
-public:
+  public:
 
-  TrackSelectionState(const SharedState &state);
+    TrackSelectionState(const SharedState& state);
 
-protected:
-  virtual void Init();
-  virtual void Update();
-  virtual void Draw(Renderer &renderer) const;
+  protected:
+    virtual void Init();
+    virtual void Update();
+    virtual void Draw(Renderer& renderer) const;
 
-private:
-  void PlayTrackPreview(microseconds_t additional_time);
-  std::vector<Track::Properties> BuildTrackProperties() const;
+  private:
+    void PlayTrackPreview(microseconds_t additional_time);
+    std::vector<Track::Properties> BuildTrackProperties() const;
 
-  int m_page_count;
-  int m_current_page;
-  int m_tiles_per_page;
+    int m_page_count;
+    int m_current_page;
+    int m_tiles_per_page;
 
-  bool m_preview_on;
-  bool m_first_update_after_seek;
-  size_t m_preview_track_id;
+    bool m_preview_on;
+    bool m_first_update_after_seek;
+    size_t m_preview_track_id;
 
-  ButtonState m_continue_button;
-  ButtonState m_back_button;
+    ButtonState m_continue_button;
+    ButtonState m_back_button;
 
-  std::string m_tooltip;
+    std::string m_tooltip;
 
-  std::vector<TrackTile> m_track_tiles;
+    std::vector<TrackTile> m_track_tiles;
 
-  SharedState m_state;
+    SharedState m_state;
 };
 
 #endif // __TRACKSELECTION_STATE_H

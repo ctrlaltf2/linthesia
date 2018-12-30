@@ -14,49 +14,49 @@
 typedef unsigned int TextureId;
 
 class Tga {
-public:
+  public:
 
-  static Tga *Load(const std::string &resource_name);
-  static void Release(Tga *tga);
+    static Tga *Load(const std::string& resource_name);
+    static void Release(Tga *tga);
 
-  TextureId GetId() const {
-    return m_texture_id;
-  }
+    TextureId GetId() const {
+        return m_texture_id;
+    }
 
-  unsigned int GetWidth() const {
-    return m_width;
-  }
+    unsigned int GetWidth() const {
+        return m_width;
+    }
 
-  unsigned int GetHeight() const {
-    return m_height;
-  }
+    unsigned int GetHeight() const {
+        return m_height;
+    }
 
-  void SetSmooth(bool smooth);
+    void SetSmooth(bool smooth);
 
-private:
+  private:
 
-  TextureId m_texture_id;
-  unsigned int m_width;
-  unsigned int m_height;
+    TextureId m_texture_id;
+    unsigned int m_width;
+    unsigned int m_height;
 
-  Tga() { }
-  ~Tga() { }
+    Tga() {}
 
-  Tga(const Tga& rhs);
-  Tga &operator=(const Tga& rhs);
+    ~Tga() {}
 
+    Tga(const Tga& rhs);
+    Tga& operator=(const Tga& rhs);
 
-  static Tga *LoadFromData(const unsigned char *bytes);
+    static Tga *LoadFromData(const unsigned char *bytes);
 
-  static Tga *LoadCompressed(const unsigned char *src, unsigned char *dest,
-                             unsigned int width, unsigned int height, unsigned int bpp);
+    static Tga *LoadCompressed(const unsigned char *src, unsigned char *dest,
+                               unsigned int width, unsigned int height, unsigned int bpp);
 
-  static Tga *LoadUncompressed(const unsigned char *src, unsigned char *dest,
-                               unsigned int size, unsigned int width, unsigned int height,
-                               unsigned int bpp);
+    static Tga *LoadUncompressed(const unsigned char *src, unsigned char *dest,
+                                 unsigned int size, unsigned int width, unsigned int height,
+                                 unsigned int bpp);
 
-  static Tga *BuildFromParameters(const unsigned char *data, unsigned int width,
-                                  unsigned int height, unsigned int bpp);
+    static Tga *BuildFromParameters(const unsigned char *data, unsigned int width,
+                                    unsigned int height, unsigned int bpp);
 };
 
 #endif // __TGA_H

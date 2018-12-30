@@ -14,36 +14,35 @@
 
 enum LinthesiaErrorCode {
 
-   Error_StringSpecified,
-   Error_BadPianoType,
-   Error_BadGameState
+    Error_StringSpecified,
+    Error_BadPianoType,
+    Error_BadGameState
 };
 
-
 class LinthesiaError : public std::exception {
-public:
+  public:
 
-  // TODO: This would be a sweet place to add stack-trace information...
+    // TODO: This would be a sweet place to add stack-trace information...
 
-  LinthesiaError(LinthesiaErrorCode error) :
-    m_error(error),
-    m_optional_string("") {
-  }
+    LinthesiaError(LinthesiaErrorCode error) :
+        m_error(error),
+        m_optional_string("") {
+    }
 
-  LinthesiaError(const std::string error) :
-    m_error(Error_StringSpecified),
-    m_optional_string(error) {
-  }
+    LinthesiaError(const std::string error) :
+        m_error(Error_StringSpecified),
+        m_optional_string(error) {
+    }
 
-  std::string GetErrorDescription() const;
+    std::string GetErrorDescription() const;
 
-  ~LinthesiaError() throw() { }
+    ~LinthesiaError() throw() {}
 
-  const LinthesiaErrorCode m_error;
+    const LinthesiaErrorCode m_error;
 
-private:
-   const std::string m_optional_string;
-   LinthesiaError operator=(const LinthesiaError&);
+  private:
+    const std::string m_optional_string;
+    LinthesiaError operator=(const LinthesiaError&);
 };
 
 #endif // __LINTHESIA_ERROR_H__

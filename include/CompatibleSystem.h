@@ -12,24 +12,24 @@
 #include <string>
 
 namespace Compatible {
-  
-  // Some monotonically increasing value tied to the system
-  // clock (but not necessarily based on app-start)
-  unsigned long GetMilliseconds();
-   
-  // Shows an error box with an OK button
-  void ShowError(const std::string &err);
-  
-  int GetDisplayLeft();
-  int GetDisplayTop();
-  int GetDisplayWidth();
-  int GetDisplayHeight();
-  
-  void HideMouseCursor();
-  void ShowMouseCursor();
-   
-  // Send a message to terminate the application loop gracefully
-  void GracefulShutdown();
+
+// Some monotonically increasing value tied to the system
+// clock (but not necessarily based on app-start)
+unsigned long GetMilliseconds();
+
+// Shows an error box with an OK button
+void ShowError(const std::string& err);
+
+int GetDisplayLeft();
+int GetDisplayTop();
+int GetDisplayWidth();
+int GetDisplayHeight();
+
+void HideMouseCursor();
+void ShowMouseCursor();
+
+// Send a message to terminate the application loop gracefully
+void GracefulShutdown();
 };
 
 #endif // __COMPATIBLE_SYSTEM_H

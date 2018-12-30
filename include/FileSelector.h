@@ -13,16 +13,16 @@
 
 namespace FileSelector {
 
-  // Presents a standard "File Open" dialog box. Returns empty string 
-  // in [filename] if user presses cancel.  Also, remembers last filename
-  void RequestMidiFilename(std::string *filename, std::string *file_title);
+// Presents a standard "File Open" dialog box. Returns empty string
+// in [filename] if user presses cancel.  Also, remembers last filename
+void RequestMidiFilename(std::string *filename, std::string *file_title);
 
-  // If a filename was passed in on the command line, we
-  // can remember it for future file-open dialogs
-  void SetLastMidiFilename(const std::string &filename);
-  
-  // Returns a filename with no path or .mid/.midi extension
-  std::string TrimFilename(const std::string &filename);
+// If a filename was passed in on the command line, we
+// can remember it for future file-open dialogs
+void SetLastMidiFilename(const std::string& filename);
+
+// Returns a filename with no path or .mid/.midi extension
+std::string TrimFilename(const std::string& filename);
 };
 
 #endif  // __FILE_SELECTOR_H
