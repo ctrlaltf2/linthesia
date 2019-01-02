@@ -21,8 +21,8 @@ install:
   - sudo apt-get install -qq cmake
 
 script:
-  cmake .
-  make -j4
+  - cmake .
+  - make -j4
 
 
 
