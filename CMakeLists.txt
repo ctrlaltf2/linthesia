@@ -25,7 +25,7 @@ add_executable(linthesia ${SOURCES})
 
 set_target_properties(linthesia
     PROPERTIES
-        CXX_STANDARD 11
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
         RUNTIME_OUTPUT_DIRECTORY bin
@@ -33,7 +33,9 @@ set_target_properties(linthesia
 
 target_compile_features(linthesia
     PUBLIC
-        cxx_std_11
+        cxx_auto_type
+        cxx_nullptr
+        cxx_std_17
 )
 
 # Add definitions for project info
@@ -41,7 +43,7 @@ target_compile_definitions(linthesia
     PUBLIC
         -DCMAKE_PROJECT_NAME="${PROJECT_NAME}";
         -DCMAKE_PROJECT_VERSION="${PROJECT_VERSION}";
-        -DCMAKE_PROJECT_BUGREPORT="troyer@protonmail.com";
+        -DCMAKE_PROJECT_BUGREPORT="ctrlaltf2@protonmail.ch";
 )
 
 # Asset locations
@@ -72,6 +74,7 @@ target_compile_options(linthesia
     PUBLIC
         -Wall
         -Wextra
+        -Werror=return-type
         -O2
         ${GTKGLEXTMM_CFLAGS}
         ${GTKMM_CFLAGS}
