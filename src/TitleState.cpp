@@ -175,9 +175,7 @@ void TitleState::Update() {
 
         Midi *new_midi = 0;
 
-        string filename;
-        string file_title;
-        FileSelector::RequestMidiFilename(&filename, &file_title);
+        auto [file_title, filename] = FileSelector::RequestMidiFilename();
 
         if (filename != "") {
             try {

@@ -19,8 +19,8 @@ const static char PathDelimiter = '/';
 
 namespace FileSelector {
 
-void RequestMidiFilename(string *returned_filename,
-                         string *returned_file_title) {
+// File path, file title
+std::tuple<std::string, std::string> RequestMidiFilename() {
 
     // Grab the filename of the last song we played
     // and pre-load it into the open dialog
@@ -52,27 +52,16 @@ void RequestMidiFilename(string *returned_filename,
     filter_all.add_pattern("*.*");
     dialog.add_filter(filter_all);
 
+    std::string path, name;
     int response = dialog.run();
     switch (response) {
         case Gtk::RESPONSE_ACCEPT:
-
-            string filename = dialog.get_filename();
-            SetLastMidiFilename(filename);
-
-            if (returned_file_title)
-                *returned_file_title = filename.substr(filename.rfind(PathDelimiter) + 1);
-
-            if (returned_filename)
-                *returned_filename = filename;
-
-            return;
+            path = dialog.get_filename();
+            name = path.substr(path.rfind(PathDelimiter) + 1);
+            SetLastMidiFilename(path);
     }
 
-    if (returned_file_title)
-        *returned_file_title = "";
-
-    if (returned_filename)
-        *returned_filename = "";
+    return {path, name};
 }
 
 void SetLastMidiFilename(const string& filename) {

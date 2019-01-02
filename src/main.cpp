@@ -290,62 +290,60 @@ int main(int argc, char *argv[]) {
     );
 
     try {
-        string command_line("");
+        std::string midi_file;
 
         UserSetting::Initialize("Linthesia");
 
         if (argc > 1)
-            command_line = string(argv[1]);
+            midi_file = argv[1];
 
         // strip any leading or trailing quotes from the filename
         // argument (to match the format returned by the open-file
         // dialog later).
-        if (command_line.length() > 0 &&
-            command_line[0] == '\"')
-            command_line = command_line.substr(1, command_line.length() - 1);
+        if (!midi_file.empty() &&
+            midi_file[0] == '\"')
+            midi_file = midi_file.substr(1, midi_file.length() - 1);
 
-        if (command_line.length() > 0 &&
-            command_line[command_line.length() - 1] == '\"')
-            command_line = command_line.substr(0, command_line.length() - 1);
+        if (!midi_file.empty() &&
+            midi_file[midi_file.length() - 1] == '\"')
+            midi_file = midi_file.substr(0, midi_file.length() - 1);
 
-        Midi *midi = 0;
+        Midi *midi{nullptr};
 
         // attempt to open the midi file given on the command line first
-        if (command_line != "") {
+        if (!midi_file.empty()) {
             try {
-                midi = new Midi(Midi::ReadFromFile(command_line));
+                midi = new Midi(Midi::ReadFromFile(midi_file));
             }
-
             catch (const MidiError& e) {
                 string wrapped_description = STRING("Problem while loading file: " <<
-                                                                                   command_line <<
+                                                                                   midi_file <<
                                                                                    "\n") + e.GetErrorDescription();
                 Compatible::ShowError(wrapped_description);
-
-                command_line = "";
-                midi = 0;
+                midi_file.clear();
+                delete midi;
             }
         }
 
         // if midi couldn't be opened from command line filename or there
         // simply was no command line filename, use a "file open" dialog.
-        if (command_line == "") {
+        std::string midi_name;
+        if (midi_file.empty()) {
             while (!midi) {
-                string file_title;
-                FileSelector::RequestMidiFilename(&command_line, &file_title);
+                auto [req_path, req_name] = FileSelector::RequestMidiFilename();
 
-                if (command_line != "") {
+                if (!req_path.empty()) {
+                    midi_file = req_path;
+                    midi_name = req_name;
                     try {
-                        midi = new Midi(Midi::ReadFromFile(command_line));
-                    }
-                    catch (const MidiError& e) {
+                        midi = new Midi(Midi::ReadFromFile(req_path));
+                    } catch (const MidiError& e) {
                         string wrapped_description = \
           STRING("Problem while loading file: " <<
-                                                file_title <<
+                                                req_name <<
                                                 "\n") + e.GetErrorDescription();
                         Compatible::ShowError(wrapped_description);
-
-                        midi = 0;
+                        delete midi;
                     }
                 } else {
                     // they pressed cancel, so they must not want to run
@@ -392,7 +390,7 @@ int main(int argc, char *argv[]) {
 
         // do this after gl context is created (ie. after da realized)
         SharedState state;
-        state.song_title = FileSelector::TrimFilename(command_line);
+        state.song_title = FileSelector::TrimFilename(midi_file);
         state.midi = midi;
         state.dpms_thread = dpms_thread;
         state_manager->SetInitialState(new TitleState(state));
@@ -423,7 +421,6 @@ int main(int argc, char *argv[]) {
         window_state.Deactivate();
 
         delete dpms_thread;
-
         return 0;
     }
 
