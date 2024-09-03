@@ -43,7 +43,7 @@ target_compile_definitions(linthesia
     PUBLIC
         -DCMAKE_PROJECT_NAME="${PROJECT_NAME}";
         -DCMAKE_PROJECT_VERSION="${PROJECT_VERSION}";
-        -DCMAKE_PROJECT_BUGREPORT="ctrlaltf2@protonmail.ch";
+        -DCMAKE_PROJECT_BUGREPORT="23644849+ctrlaltf2@users.noreply.github.com";
 )
 
 # Asset locations
